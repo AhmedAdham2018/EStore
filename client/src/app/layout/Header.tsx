@@ -1,13 +1,21 @@
 import {
   AppBar,
+  Badge,
   Box,
   FormControlLabel,
+  IconButton,
+  List,
+  ListItem,
   styled,
   Switch,
   Toolbar,
   Typography,
 } from "@mui/material";
+
 import ShopIcon from "@mui/icons-material/Shop2";
+import { NavLink } from "react-router-dom";
+import { ShoppingCart } from "@mui/icons-material";
+
 interface Props {
   isDarkMode: boolean;
   setDarkMode: () => void;
@@ -61,40 +69,109 @@ export default function Header({ setDarkMode, isDarkMode }: Props) {
       borderRadius: 20 / 2,
     },
   }));
+
+  const midLinks = [
+    { path: "/shop", title: "Shop" },
+    { path: "/contact-us", title: "Contact" },
+    { path: "/about-us", title: "About" },
+  ];
+
+  const rightLinks = [
+    { path: "/login", title: "Login" },
+    { path: "/register", title: "Register" },
+  ];
+
+  const navStyles = {
+    color: "inherit",
+    typography: "h6",
+    "&:hover": {
+      color: "grey.500",
+    },
+    "&.active": {
+      color: "text.secondary",
+    },
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ mb: 4 }}>
-        <Toolbar>
-          <ShopIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            ESTORE
-          </Typography>
-          <FormControlLabel
-            control={
-              <MaterialUISwitch
-                sx={{ m: 1 }}
-                checked={isDarkMode}
-                onChange={setDarkMode}
-              />
-            }
-            label=""
-            aria-label="dark mode switch"
-            labelPlacement="end"
-          />
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Box display="flex" alignItems="center">
+            <ShopIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+            <Typography
+              variant="h6"
+              noWrap
+              component={NavLink}
+              to="/"
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+                "&:hover": {
+                  color: "grey.500",
+                },
+                "&.active": {
+                  color: "text.secondary",
+                },
+              }}
+            >
+              ESTORE
+            </Typography>
+            <FormControlLabel
+              control={
+                <MaterialUISwitch
+                  sx={{ m: 1 }}
+                  checked={isDarkMode}
+                  onChange={setDarkMode}
+                />
+              }
+              label=""
+              aria-label="dark mode switch"
+              labelPlacement="end"
+            />
+          </Box>
+          <Box display="flex" alignItems="center">
+            <List sx={{ display: "flex" }}>
+              {midLinks.map(({ path, title }) => (
+                <ListItem
+                  component={NavLink}
+                  to={path}
+                  key={path}
+                  sx={navStyles}
+                >
+                  {title.toLocaleUpperCase()}
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+          <Box display="flex" alignItems="center">
+            <IconButton size="large" sx={{ color: "inherit" }}>
+              <Badge badgeContent={4} color="secondary">
+                <ShoppingCart />
+              </Badge>
+            </IconButton>
+            <List sx={{ display: "flex" }}>
+              {rightLinks.map(({ path, title }) => (
+                <ListItem
+                  component={NavLink}
+                  to={path}
+                  key={path}
+                  sx={navStyles}
+                >
+                  {title.toLocaleUpperCase()}
+                </ListItem>
+              ))}
+            </List>
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>
